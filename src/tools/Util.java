@@ -1,47 +1,81 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package tools;
 
+import javax.swing.*;
+import java.awt.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JComponent;
-import javax.swing.JTextField;
 
-/**
- *
- * @author u11289134103
- */
 public class Util {
-    public static void habilitar(boolean valor, JComponent ... comp){
-        for (int i = 0; i < comp.length; i++){
-            comp[i].setEnabled(valor);
+
+    // Método para habilitar ou desabilitar componentes em um JPanel
+    public static void habilitarComponentes(JPanel panel, boolean habilitar) {
+        Component[] componentes = panel.getComponents();
+        for (Component componente : componentes) {
+            componente.setEnabled(habilitar);
         }
     }
-    public static void limpar(JComponent ... comp){
-        for (int i = 0; i < comp.length; i++){
-            ((JTextField)comp[i]).setText("");
+
+    // Método para limpar campos de texto em um JPanel
+    public static void limparCampos(JPanel panel) {
+        Component[] componentes = panel.getComponents();
+        for (Component componente : componentes) {
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setText("");
+            } else if (componente instanceof JPasswordField) {
+                ((JPasswordField) componente).setText("");
+            }
         }
-        if (comp[i] instanceof JTextFild){
-            ((JTextField) comp[i]).setText("");
     }
+
+    // Método para mostrar mensagem de confirmação
+    public static boolean perguntar(String mensagem, String titulo) {
+        int resposta = JOptionPane.showConfirmDialog(null, mensagem, titulo, JOptionPane.YES_NO_OPTION);
+        return resposta == JOptionPane.YES_OPTION;
     }
-    public static int strToInt(String cad){
-        return 0;
-    }      
-    public static double strToDouble(String cad){
-        return 0;
+
+    // Método para mostrar mensagens de erro
+    public static void mostrarErro(String mensagem) {
+        JOptionPane.showMessageDialog(null, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
     }
-    public static Date strDate(String cad){
-        return null;
+
+    // Método para mostrar mensagens de informação
+    public static void mostrarInformacao(String mensagem) {
+        JOptionPane.showMessageDialog(null, mensagem, "Informação", JOptionPane.INFORMATION_MESSAGE);
     }
-    public static String intToStr(int num){
-        return"";
+
+    // Método para converter String para inteiro
+    public static int stringParaInt(String valor) {
+        try {
+            return Integer.parseInt(valor);
+        } catch (NumberFormatException e) {
+            mostrarErro("Valor inválido! Deve ser um número inteiro.");
+            return 0;
+        }
     }
-    public static String doubleToStr(int num){
-        return"";
+
+    // Método para converter String para Date
+    public static Date stringParaData(String dataStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return sdf.parse(dataStr);
+        } catch (ParseException e) {
+            mostrarErro("Formato de data inválido! Use o formato 'yyyy-MM-dd'.");
+            return null;
+        }
     }
-    public static String dateToStr(int num){
-        return null;
+
+    // Método para converter Date para String
+    public static String dataParaString(Date data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(data);
+    }
+
+    // Método para centralizar uma janela (JFrame ou JDialog) na tela
+    public static void centralizarJanela(Window janela) {
+        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (tela.width - janela.getWidth()) / 2;
+        int y = (tela.height - janela.getHeight()) / 2;
+        janela.setLocation(x, y);
     }
 }
